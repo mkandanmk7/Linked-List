@@ -2,9 +2,32 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 
 const Post = () => {
-    const [post, setPost] = useState("");
+    const [post, setPost] = useState({});
+    const [allPosts, setAllPosts] = useState([]);
 
+    const getAllPosts = async () => {
+        try {
+            const allPost = await axios.get(`http://localhost:4001/posts/allposts`);
+            setAllPosts(allPost);
+        } catch (err) {
+            console.log(err.message);
+        }
+    }
+    const length = allPosts.length;
 
+    const lastPost = allPosts[length - 1];
+
+    const disablePrevButton = (post) => {
+        if (post.prev === null) return true;
+
+        else return false;
+    }
+
+    const disableNextButton = (post) => {
+        if (post.next === null) return true;
+        else return false;
+
+    }
 
     const getSinglePost = async (id) => {
         // http://localhost:4001/posts
@@ -13,17 +36,24 @@ const Post = () => {
         setPost(postDetails.data);
     }
 
+
     useEffect(() => {
-        getSinglePost("62376556853d7d1c06530bf3")
+        getSinglePost(lastPost.postId);
+    }, []);
+
+    useEffect(() => {
+        getAllPosts();
+
     }, [])
 
-    const getNextPost = () => {
-        console.log("id:");
+    const getNextPost = (post) => {
+        getSinglePost(post.next)
     }
 
-    const getPreviousPost = () => {
-        console.log('id')
+    const getPreviousPost = (post) => {
+        getSinglePost(post.prev);
     }
+
 
 
     return (
@@ -31,11 +61,11 @@ const Post = () => {
             <div className='p-3'>
                 <h3 className="p-3 mt-3">title: {post.title}</h3>
                 <h5 className='text-secondary p-3'>Description: {post.description}</h5>
-                <p>Created At : {" " + new Date(post.createAt)}</p>
+                {/* <p>Created At : {" " + new Date(post.createAt)}</p> */}
                 <div className="d-flex justify-content-around" >
 
-                    <button className='btn btn-success  ' onClick={getNextPost}>next</button>
-                    <button className='btn btn-success ' onClick={getPreviousPost}>previous</button>
+                    <button className='btn btn-success' disabled={disablePrevButton(post)} onClick={() => getPreviousPost(post)}>previous</button>
+                    <button className='btn btn-success  ' disabled={disableNextButton(post)} onClick={() => getNextPost(post)}>next</button>
                 </div>
             </div>
 
