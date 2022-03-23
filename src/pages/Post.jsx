@@ -3,22 +3,29 @@ import React, { useEffect, useState } from 'react'
 
 const Post = () => {
     const [post, setPost] = useState({});
+    const [getRelativePost, setgetRelativePost] = useState("");
     const [allPosts, setAllPosts] = useState([]);
     console.log("allposts:", allPosts);
+    console.log('getRelativePost :>> ', getRelativePost);
 
     const getAllPosts = async () => {
         try {
+            console.log("in all post useeffect");
             const allPost = await axios.get(`http://localhost:4001/posts/allposts`);
-            console.log("all posts:", allPost);
-            setAllPosts(allPost.data);
+
+            const all_posts = allPost.data;
+
+            const allPostLength = all_posts.length;
+            setgetRelativePost(all_posts[allPostLength - 1].postId);
+            setAllPosts(all_posts);
         } catch (err) {
             console.log(err.message);
         }
     }
-    const length = allPosts.length;
+    // const length = allPosts.length;
 
-    const lastPost = allPosts[length - 1];
-    console.log("lastPost:", lastPost);
+    // const lastPost = allPosts[length - 1];
+    // console.log("lastPost:", lastPost);
 
     const disablePrevButton = (post) => {
         if (post.prev === null) return true;
@@ -34,8 +41,11 @@ const Post = () => {
 
     const getSinglePost = async (id) => {
         try {
+            console.log("in single post");
             const postDetails = await axios.get(`http://localhost:4001/posts/${id}`);
             console.log('postDetails :>> ', postDetails);
+
+
             setPost(postDetails.data);
         } catch (err) {
             console.log(err.message);
@@ -45,21 +55,24 @@ const Post = () => {
 
     // getSinglePost(lastPost.postId)
     useEffect(() => {
-        getSinglePost(lastPost.postId);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+
+        getSinglePost(getRelativePost);
+    }, [getRelativePost]);
 
     useEffect(() => {
-        getAllPosts();
+
+        getAllPosts(getRelativePost);
 
     }, [])
 
     const getNextPost = (post) => {
-        getSinglePost(post.next)
+        setgetRelativePost(post.next)
+        // getSinglePost(post.next)
     }
 
     const getPreviousPost = (post) => {
-        getSinglePost(post.prev);
+        setgetRelativePost(post.prev);
+        // getSinglePost(post.prev);
     }
 
     const deletePost = async (post) => {
