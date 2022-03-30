@@ -1,11 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 
 const Post = () => {
     const [post, setPost] = useState({});
     const [getRelativePost, setgetRelativePost] = useState("");
     const [allPosts, setAllPosts] = useState([]);
-    console.log("allposts:", allPosts);
+    // console.log("allposts:", allPosts);
     console.log('getRelativePost :>> ', getRelativePost);
 
     const getAllPosts = async () => {
@@ -92,13 +93,16 @@ const Post = () => {
                 <h3 className="p-3 mt-3">title: {post.title}</h3>
                 <h5 className='text-light p-3'>Description: {post.description}</h5>
                 {/* <p>Created At : {" " + new Date(post.createAt)}</p> */}
-                <div className="d-flex justify-content-evenly" >
+                <div className="d-flex justify-content-evenly m-2" >
 
 
-                    <button className='btn btn-success' disabled={disablePrevButton(post)} onClick={() => getPreviousPost(post)}>previous</button>
-                    <button className='btn btn-danger' onClick={() => deletePost(post)}>delete</button>
+                    <button className='btn btn-success mx-2' disabled={disablePrevButton(post)} onClick={() => getPreviousPost(post)}>previous</button>
+                    <button className='btn btn-danger  mx-2' onClick={() => deletePost(post)}>delete</button>
+                    <Link to="/createpost">
 
-                    <button className='btn btn-success  ' disabled={disableNextButton(post)} onClick={() => getNextPost(post)}>next</button>
+                        <button className='btn btn-warning mx-2' >Add Post</button>
+                    </Link>
+                    <button className='btn btn-success mx-2  ' disabled={disableNextButton(post)} onClick={() => getNextPost(post)}>next</button>
                 </div>
             </div>
 
