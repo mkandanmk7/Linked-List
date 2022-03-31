@@ -16,6 +16,7 @@ function App() {
           <Route path="/formik" element={<FormikSignUP />} />
           <Route path="/login" element={<Login />} />
           <Route path="/createpost" element={<CreatePost />} />
+          <Route path="/createpost/:position" element={<CreatePost />} />
           <Route path="post" element={<Post />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

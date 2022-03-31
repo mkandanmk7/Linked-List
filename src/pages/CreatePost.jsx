@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import axios from "axios"
+import { useParams } from 'react-router-dom';
 
 const CreatePost = () => {
     const [title, SetTitle] = useState("");
     const [description, setDescription] = useState("");
-
+    const params = useParams();
+    console.log("params:", params);
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === "title") SetTitle(value);
         else if (name === "description") setDescription(value);
     }
+
 
 
 
@@ -21,7 +24,11 @@ const CreatePost = () => {
         }
         console.log("in submit");
         console.log('postData :>> ', postData);
-        await axios.post("http://localhost:4001/posts", postData);
+        if (params.position) {
+
+            await axios.post(`http://localhost:4001/posts/insert/${params.position}`, postData);
+        }
+        else await axios.post("http://localhost:4001/posts", postData);
         SetTitle("");
         setDescription("");
     }

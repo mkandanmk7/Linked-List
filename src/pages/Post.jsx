@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 const Post = () => {
     const [post, setPost] = useState({});
+    const [currentPostIndex, setcurrentPostIndex] = useState(null);
     const [getRelativePost, setgetRelativePost] = useState("");
     const [allPosts, setAllPosts] = useState([]);
     // console.log("allposts:", allPosts);
@@ -19,6 +20,9 @@ const Post = () => {
             const allPostLength = all_posts.length;
             setgetRelativePost(all_posts[allPostLength - 1].postId);
             setAllPosts(all_posts);
+            const index = allPostLength - 1;
+            console.log("current index: ", index);
+            setcurrentPostIndex(index)
         } catch (err) {
             console.log(err.message);
         }
@@ -98,7 +102,7 @@ const Post = () => {
 
                     <button className='btn btn-success mx-2' disabled={disablePrevButton(post)} onClick={() => getPreviousPost(post)}>previous</button>
                     <button className='btn btn-danger  mx-2' onClick={() => deletePost(post)}>delete</button>
-                    <Link to="/createpost">
+                    <Link to={`/createpost/${currentPostIndex}`}>
 
                         <button className='btn btn-warning mx-2' >Add Post</button>
                     </Link>
