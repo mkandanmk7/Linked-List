@@ -6,6 +6,7 @@ import Post from './pages/Post';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import FormikSignUP from './pages/Formik';
+import DateChooser from './pages/DateChooser';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Post />} />
+          <Route path="/date" element={<DateChooser />} />
           <Route path="/formik" element={<FormikSignUP />} />
           <Route path="/login" element={<Login />} />
           <Route path="/createpost" element={<CreatePost />} />

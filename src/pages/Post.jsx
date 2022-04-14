@@ -14,23 +14,33 @@ const Post = () => {
         try {
             console.log("in all post useeffect");
             const allPost = await axios.get(`http://localhost:4001/posts/allposts`);
+            console.log("all posts:", allPost);
+            // const all_posts = allPost.data;
 
-            const all_posts = allPost.data;
+            // const allPostLength = all_posts.length;
 
-            const allPostLength = all_posts.length;
-            setgetRelativePost(all_posts[allPostLength - 1].postId);
-            setAllPosts(all_posts);
-            const index = allPostLength - 1;
-            console.log("current index: ", index);
-            setcurrentPostIndex(index)
+
+            // let lastPost = all_posts[allPostLength - 1];
+            // // setgetRelativePost(all_posts[allPostLength - 1].postId);
+            // setAllPosts(all_posts);
+            // let recentPost;
+            // const index = allPostLength - 1;
+            // all_posts.map(item => {
+            //     if (item.date > lastPost.date) {
+            //         console.log("recent:", item);
+            //         recentPost = item;
+            //         setPost(recentPost);
+            //     }
+
+            //     return setPost(lastPost);
+            // })
+            // console.log("current index: ", index);
+            // setcurrentPostIndex(index)
         } catch (err) {
             console.log(err.message);
         }
     }
-    // const length = allPosts.length;
 
-    // const lastPost = allPosts[length - 1];
-    // console.log("lastPost:", lastPost);
 
     const disablePrevButton = (post) => {
         if (post.prev === null) return true;
@@ -58,16 +68,17 @@ const Post = () => {
 
     }
 
-    // getSinglePost(lastPost.postId)
+    // // getSinglePost(lastPost.postId)
+    // useEffect(() => {
+
+    //     getSinglePost(getRelativePost);
+    // }, [getRelativePost]);
+
     useEffect(() => {
 
-        getSinglePost(getRelativePost);
-    }, [getRelativePost]);
+        getAllPosts();
 
-    useEffect(() => {
-
-        getAllPosts(getRelativePost);
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const getNextPost = (post) => {

@@ -1,34 +1,49 @@
 import React, { useState } from 'react';
 import axios from "axios"
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const CreatePost = () => {
     const [title, SetTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [date, setDate] = useState("");
     const params = useParams();
     console.log("params:", params);
+    const history = useNavigate();
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === "title") SetTitle(value);
         else if (name === "description") setDescription(value);
     }
 
+    const handleDate = (e) => {
+        const utcTime = Math.floor(new Date(e.target.value).getTime() / 1000);
+        console.log(Math.floor(new Date(e.target.value).getTime() / 1000));
+        setDate(utcTime);
 
+    }
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         let postData = {
             title,
-            description
+            description,
+            createdAt: date,
+
         }
         console.log("in submit");
         console.log('postData :>> ', postData);
         if (params.position) {
 
+            console.log("in position updation");
+
             await axios.post(`http://localhost:4001/posts/insert/${params.position}`, postData);
         }
-        else await axios.post("http://localhost:4001/posts", postData);
+        else {
+            console.log("in normal post insert")
+            await axios.post("http://localhost:4001/posts", postData);
+
+        }
         SetTitle("");
         setDescription("");
     }
@@ -49,6 +64,10 @@ const CreatePost = () => {
                     <label htmlFor="exampleInputEmail1">Post Title</label>
                     <textarea className="form-control" name="description" value={description} id="exampleFormControlTextarea1" onChange={handleChange} rows="3"></textarea>
 
+                </div>
+                <div >
+                    <label>Choose Date</label>
+                    <input onChange={handleDate} type="date" name="date" />
                 </div>
 
                 <button type="submit" className="btn btn-primary ">Submit</button>
