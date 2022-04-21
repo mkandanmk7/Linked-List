@@ -1,21 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react'
 import InputDate from '../components/InputDate';
+import { getDate } from '../helpers/helpers';
 
 const DateChooser = () => {
     const [dateValue, setDateValue] = useState();
     const dateFocus = useRef(null);
     const inputFocus = useRef(null);
-
+    console.log("date value", dateValue);
 
     const handleChange = (e) => {
-        setDateValue(e.target.value)
+        console.log("Date value:", e.target.value);
+
+        const value = e.target.value === "" ? getDate(new Date()) : e.target.value;
+
+        setDateValue(value)
+
+
         // inputRef.current.focus();
-        console.log("hello")
     }
-    const getDate = (date) => {
-        console.log(new Date(date).toISOString().split("T")[0]);
-        return new Date(date).toISOString().split("T")[0];
-    }
+    // const getDate = (date) => {
+    //     // console.log(new Date(date).toISOString().split("T")[0]);
+    //     return new Date(date).toISOString().split("T")[0]; // return date
+    // }
     const handleKeyDown = (e) => {
         console.log("key down:", e.key);
         if (e.key === "Enter") {
@@ -23,6 +29,7 @@ const DateChooser = () => {
         }
     }
     const handleClick = () => {
+        console.log("dateFocus:", dateFocus);
         dateFocus.current.focus();
     }
     useEffect(() => {
